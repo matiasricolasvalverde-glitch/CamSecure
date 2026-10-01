@@ -1,83 +1,240 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CamSecure</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#e9edf3;font-family:Arial,sans-serif;color:#182230}
-.phone{max-width:390px;min-height:100vh;margin:auto;background:#f5f7fb}
-.top{padding:24px 20px 18px;background:#fff}.logo{font-size:25px;font-weight:800}.hello{font-size:13px;color:#667085;margin-top:4px}
-.search{margin-top:17px;display:flex;gap:7px}.search input{flex:1;padding:12px;border:1px solid #e1e5eb;border-radius:13px;font-size:15px}.search button{border:0;border-radius:13px;padding:0 14px;background:#2563eb;color:#fff;font-weight:700}
-.body{padding:18px 16px 25px;min-height:550px}.title{font-size:18px;font-weight:800;margin-bottom:12px}.brands{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.brand{background:#fff;border:1px solid #e4e7ec;border-radius:17px;padding:16px 10px;text-align:left;cursor:pointer;min-height:105px}.brand .icon{font-size:28px}.brand b{display:block;margin-top:10px}.brand small{color:#667085}
-.tutorial{background:#fff;border-radius:18px;padding:17px;border:1px solid #e4e7ec}.tutorial h2{margin:0 0 3px}.step{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #eef0f3;font-size:13px}.num{width:28px;height:28px;min-width:28px;border-radius:50%;display:grid;place-items:center;background:#eaf2ff;color:#2563eb;font-weight:800}
-.back{border:0;background:#f0f2f5;border-radius:10px;padding:10px 13px;font-weight:700;margin-top:14px;cursor:pointer}
-.bottom{display:flex;justify-content:space-around;background:#fff;border-top:1px solid #e5e7eb;padding:10px 4px;position:sticky;bottom:0}.nav{background:none;border:0;font-size:11px;color:#667085;cursor:pointer;padding:5px 15px}.nav.active{color:#2563eb;font-weight:800}.nav span{display:block;font-size:20px;margin-bottom:2px}
-</style>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
 <link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#2563eb">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch(console.error);
-  });
-}
-</script>
+<title>CamSecure - Guía de cámaras</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#111827;color:white;padding:22px 18px 20px;position:sticky;top:0;z-index:5}
+h1{margin:0;font-size:28px}header p{margin:6px 0 0;color:#cbd5e1}
+main{max-width:760px;margin:auto;padding:16px}
+.search{display:flex;gap:8px;margin-bottom:16px}.search input{flex:1;padding:14px;border:1px solid #d5dbe5;border-radius:12px;font-size:16px}
+button{border:0;border-radius:12px;padding:12px 15px;font-weight:700;cursor:pointer}
+.primary{background:#2563eb;color:white}.back{background:#e5e7eb;color:#111827;margin-bottom:14px}
+.section-title{margin:18px 0 10px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.card{background:white;border:1px solid #e1e6ef;border-radius:16px;padding:16px;box-shadow:0 2px 8px #00000008;cursor:pointer}
+.card .ico{font-size:30px}.card h3{margin:8px 0 4px;font-size:17px}.card p{margin:0;color:#64748b;font-size:13px}
+.assistant{background:#111827;color:white;border-radius:18px;padding:18px;margin:18px 0;cursor:pointer}
+.assistant small{color:#cbd5e1}
+.support{display:block;text-decoration:none;background:#dcfce7;color:#166534;border-radius:16px;padding:16px;margin-top:12px}
+.support small{display:block;margin-top:5px}.wa{display:block;text-align:center;text-decoration:none;background:#16a34a;color:white;border-radius:12px;padding:13px;margin-top:10px;font-weight:700}
+.panel{background:white;border-radius:16px;padding:18px;border:1px solid #e1e6ef}.panel h2{margin-top:0}
+.step{padding:13px 0;border-bottom:1px solid #e5e7eb;line-height:1.5}.step:last-child{border-bottom:0}
+.problem{display:flex;gap:10px;align-items:center;margin:8px 0;width:100%;text-align:left;background:#f8fafc;border:1px solid #e2e8f0}
+.problem span{font-size:23px}.tip{background:#eff6ff;padding:12px;border-radius:12px;margin-top:14px;color:#1e40af}
+footer{text-align:center;color:#64748b;font-size:12px;padding:25px}
+@media(max-width:480px){.grid{grid-template-columns:1fr 1fr}main{padding:12px}}
+</style>
 </head>
 <body>
-<div class="phone">
-<header class="top">
-<div class="logo">🔐 CamSecure</div>
-<div class="hello">Guía para configurar tu cámara de seguridad</div>
-<form class="search" id="form"><input id="q" placeholder="Buscar marca o modelo"><button>Buscar</button></form>
-</header>
-<main class="body" id="content"></main>
-<nav class="bottom">
-<button class="nav active" data-page="home"><span>⌂</span>Inicio</button>
-<button class="nav" data-page="brands"><span>▦</span>Marcas</button>
-<button class="nav" data-page="help"><span>?</span>Ayuda</button>
-</nav>
-</div>
+<header><h1>🔐 CamSecure</h1><p>Guía para configurar tu cámara de seguridad</p></header>
+<main id="content"></main>
+<footer>CamSecure · Guía de configuración</footer>
 <script>
-const data=[
-["Hikvision","📷","Cámaras IP y DVR"],["Dahua","📹","Cámaras IP y grabadores"],
-["EZVIZ","📡","Cámaras Wi-Fi"],["TP-Link Tapo","📶","Cámaras inteligentes"],
-["Xiaomi","🏠","Cámaras domésticas"],["Imou","🎥","Cámaras Wi-Fi"],
-["Reolink","🔭","Cámaras IP"],["Annke","🛡️","Cámaras y DVR"]
+const brands=[
+["Hikvision","📷","Cámaras IP y DVR",[
+"Instala la cámara y conecta el cable de red o alimentación.",
+"Instala Hik-Connect y crea/inicia sesión en tu cuenta.",
+"En Hik-Connect pulsa + para añadir el dispositivo.",
+"Escanea el código QR de la etiqueta o introduce el número de serie.",
+"Configura la red Wi‑Fi cuando el modelo sea compatible.",
+"Define una contraseña segura para el dispositivo.",
+"Comprueba la vista en directo y ajusta fecha, hora y zona horaria.",
+"Activa grabación, detección de movimiento y notificaciones según necesites."
+]],
+["Dahua","📹","Cámaras IP y grabadores",[
+"Conecta la cámara o el grabador a la alimentación.",
+"Instala DMSS en el teléfono.",
+"Abre DMSS, inicia sesión o crea una cuenta.",
+"Pulsa el botón + y selecciona escanear/añadir dispositivo.",
+"Escanea el QR del equipo o introduce su número de serie.",
+"Completa la configuración de red y establece la contraseña.",
+"Prueba la vista en directo y la reproducción.",
+"Configura detección, grabación y notificaciones."
+]],
+["EZVIZ","📡","Cámaras Wi‑Fi",[
+"Enciende la cámara y espera a que indique que está lista para configurar.",
+"Instala EZVIZ e inicia sesión.",
+"Pulsa + y escanea el código QR de la cámara.",
+"Conecta la cámara a una red Wi‑Fi compatible con el modelo.",
+"Durante el emparejamiento mantén el teléfono cerca de la cámara.",
+"Espera a que termine la configuración y comprueba la imagen.",
+"Configura nombre, zona horaria, alertas y almacenamiento."
+]],
+["TP-Link Tapo","📶","Cámaras inteligentes",[
+"Enciende la cámara y espera el estado de configuración.",
+"Instala Tapo e inicia sesión con tu cuenta TP-Link.",
+"Pulsa + y selecciona el modelo de cámara.",
+"Sigue el asistente para conectar la cámara a Wi‑Fi.",
+"Si la app solicita permisos de ubicación o red local, concédeselos.",
+"Comprueba la vista en directo.",
+"Configura detección de movimiento, privacidad y almacenamiento."
+]],
+["Xiaomi","🏠","Cámaras domésticas",[
+"Enciende la cámara y espera a que esté lista para vincular.",
+"Instala Xiaomi Home y entra con tu cuenta Xiaomi.",
+"Pulsa + para añadir un dispositivo.",
+"Selecciona la cámara o escanea el código QR.",
+"Conecta la cámara a la red indicada por la app.",
+"Espera la confirmación de vinculación.",
+"Prueba la transmisión y configura alertas y almacenamiento."
+]],
+["Imou","🎥","Cámaras Wi‑Fi",[
+"Enciende la cámara y espera el modo de configuración.",
+"Instala Imou Life e inicia sesión.",
+"Pulsa + y escanea el QR de la cámara.",
+"Selecciona la red Wi‑Fi y escribe su contraseña.",
+"Completa el emparejamiento siguiendo las indicaciones de la app.",
+"Comprueba la vista en directo.",
+"Configura alertas, detección y grabación."
+]],
+["Reolink","🔭","Cámaras IP",[
+"Conecta la cámara a la alimentación y, si corresponde, a Ethernet.",
+"Instala Reolink App.",
+"Pulsa + para añadir la cámara.",
+"Escanea el QR o introduce el UID del dispositivo.",
+"Configura Wi‑Fi si el modelo lo admite.",
+"Establece la contraseña del dispositivo.",
+"Prueba la vista en directo y la reproducción.",
+"Configura detección, grabación y notificaciones."
+]],
+["Annke","🛡️","Cámaras y DVR",[
+"Conecta el DVR/NVR y las cámaras.",
+"Conecta el grabador al router mediante Ethernet.",
+"Instala la aplicación compatible indicada por el modelo.",
+"Escanea el QR o añade el dispositivo mediante su número de serie.",
+"Configura contraseña, fecha, hora y red.",
+"Comprueba la vista en directo.",
+"Configura discos, grabación continua o por eventos.",
+"Activa las notificaciones que necesites."
+]]
 ];
-const steps=[
-"Conecta la cámara a la corriente.",
-"Instala la aplicación oficial de la marca.",
-"Crea o inicia sesión en tu cuenta.",
-"Pulsa “Añadir dispositivo”.",
-"Conecta la cámara a tu red Wi-Fi.",
-"Configura una contraseña segura.",
-"Comprueba la imagen en directo."
+
+const problems=[
+["wifi","📶","La cámara no se conecta al Wi‑Fi",[
+"Comprueba que la cámara esté encendida y cerca del router.",
+"Verifica que la contraseña del Wi‑Fi esté escrita correctamente.",
+"Comprueba si el modelo requiere una red de 2,4 GHz durante la configuración.",
+"Desactiva temporalmente datos móviles si la app tiene problemas al vincular.",
+"Reinicia la cámara y vuelve a intentar el proceso."
+]],
+["qr","🔳","No reconoce el código QR",[
+"Limpia la lente de la cámara y la pantalla del teléfono.",
+"Aumenta el brillo de la pantalla.",
+"Mantén el QR a la distancia que indique la aplicación.",
+"Evita reflejos y luz directa sobre la pantalla.",
+"Si sigue fallando, prueba añadir el dispositivo mediante número de serie si la app lo permite."
+]],
+["app","📱","No puedo añadir la cámara a la app",[
+"Confirma que estás usando la aplicación correspondiente a la marca.",
+"Actualiza la aplicación desde la tienda oficial.",
+"Comprueba que el teléfono tenga conexión a Internet.",
+"Reinicia la cámara y vuelve a abrir la aplicación.",
+"Si el dispositivo ya pertenece a otra cuenta, puede ser necesario desvincularlo primero."
+]],
+["password","🔑","Problemas de acceso o contraseña",[
+"Comprueba que no haya espacios adicionales al escribir.",
+"Usa la opción de recuperación de contraseña de la aplicación si corresponde.",
+"Si es la contraseña del dispositivo, revisa el procedimiento oficial de la marca.",
+"No compartas contraseñas ni códigos de verificación con otras personas."
+]],
+["offline","☁️","La cámara aparece sin conexión",[
+"Comprueba la alimentación y los indicadores de red.",
+"Revisa si el router tiene Internet.",
+"Acerca la cámara al router para probar la señal.",
+"Reinicia primero la cámara y después el router si es necesario.",
+"Comprueba en la app si la cámara necesita actualizar su configuración de red."
+]],
+["image","🎥","No veo la imagen",[
+"Comprueba que la cámara tenga alimentación.",
+"Revisa la conexión de red.",
+"Cierra y vuelve a abrir la aplicación.",
+"Prueba la vista en directo desde otra conexión de Internet.",
+"Si el problema continúa, revisa el estado del dispositivo y las actualizaciones de la app."
+]],
+["night","🌙","La visión nocturna no funciona",[
+"Comprueba que el modo nocturno esté habilitado.",
+"Evita colocar la cámara detrás de un vidrio cuando uses infrarrojos.",
+"Retira suciedad de la lente.",
+"Comprueba si el modelo permite controlar manualmente el modo de visión nocturna."
+]],
+["audio","🔊","No funciona el audio",[
+"Comprueba que el modelo tenga micrófono y altavoz.",
+"Revisa el volumen del teléfono.",
+"Verifica los permisos de micrófono de la aplicación cuando sean necesarios.",
+"Comprueba en los ajustes de la cámara que el audio esté habilitado."
+]],
+["record","💾","No graba o no guarda videos",[
+"Comprueba si el modelo usa microSD, NVR, DVR o almacenamiento en la nube.",
+"Revisa que la tarjeta tenga espacio disponible y sea compatible.",
+"Comprueba que la grabación esté activada.",
+"Revisa fecha y hora del dispositivo.",
+"Consulta el estado del almacenamiento en la aplicación."
+]],
+["motion","🚶","No llegan alertas de movimiento",[
+"Activa la detección de movimiento en la aplicación.",
+"Comprueba que las notificaciones del teléfono estén permitidas.",
+"Revisa la sensibilidad y la zona de detección.",
+"Comprueba que el modo privacidad no esté bloqueando la detección.",
+"Verifica que la aplicación pueda ejecutarse en segundo plano."
+]],
+["remote","🌐","No puedo verla fuera de casa",[
+"Comprueba que la cámara esté conectada a Internet.",
+"Prueba desde datos móviles para confirmar el acceso remoto.",
+"Comprueba que hayas iniciado sesión en la cuenta correcta.",
+"Revisa el estado del dispositivo en la aplicación.",
+"En sistemas con DVR/NVR, verifica la configuración de acceso remoto indicada por el fabricante."
+]],
+["reset","♻️","Necesito restablecer la cámara",[
+"Busca el botón RESET indicado por el fabricante.",
+"Consulta el manual del modelo antes de restablecerlo.",
+"Ten en cuenta que un restablecimiento puede borrar la configuración de red y otras preferencias.",
+"Después del restablecimiento tendrás que añadir y configurar nuevamente el dispositivo."
+]]
 ];
-const content=document.getElementById("content"),q=document.getElementById("q");
-function card(x){return `<button class="brand" data-brand="${x[0]}"><span class="icon">${x[1]}</span><b>${x[0]}</b><small>${x[2]}</small></button>`}
-function home(){content.innerHTML='<div class="title">¿Qué cámara tienes?</div><div class="brands">'+data.slice(0,6).map(card).join("")+'</div><button class="brand" id="assistantCard" style="grid-column:1/-1;text-align:left"><span class="icon">🤖💬</span><b>Asistente Virtual</b><small>¿Necesitas ayuda? Te guiamos</small></button>'}
-function brands(){content.innerHTML='<div class="title">Todas las marcas</div><div class="brands">'+data.map(card).join("")+"</div>"}
+
+function home(){
+content.innerHTML=`<div class="search"><input id="search" placeholder="Buscar marca o problema..."><button class="primary" data-action="search">Buscar</button></div>
+<h2 class="section-title">Marcas</h2><div class="grid" id="brands"></div>
+<div class="assistant" data-action="assistant"><b>🤖 Asistente Virtual</b><br><small>Encuentra una solución a problemas comunes de configuración.</small></div>
+<h2 class="section-title">Soporte técnico</h2>
+<a class="support" href="https://wa.me/51992138933" target="_blank" rel="noopener"><b>💬 WhatsApp: 992 138 933</b><small>Soporte técnico para configuración de cámaras</small></a>
+<a class="wa" href="https://wa.me/51992138933?text=Hola%2C%20necesito%20ayuda%20con%20la%20configuraci%C3%B3n%20de%20mi%20c%C3%A1mara%20de%20seguridad." target="_blank" rel="noopener">Abrir WhatsApp</a>`;
+renderBrands(brands);
+document.getElementById("search").addEventListener("input",filter);
+}
+function renderBrands(list){
+document.getElementById("brands").innerHTML=list.map((b,i)=>`<div class="card" data-action="brand" data-brand="${i}"><div class="ico">${b[1]}</div><h3>${b[0]}</h3><p>${b[2]}</p></div>`).join("");
+}
+function filter(e){
+const q=e.target.value.toLowerCase();
+renderBrands(brands.filter(b=>b[0].toLowerCase().includes(q)||b[2].toLowerCase().includes(q)));
+}
+function tutorial(i){
+const b=brands[i];
+content.innerHTML=`<button class="back" data-action="back-home">← Volver</button><div class="panel"><h2>${b[1]} ${b[0]}</h2><p>${b[2]}</p>${b[3].map((s,n)=>`<div class="step"><b>Paso ${n+1}.</b> ${s}</div>`).join("")}<div class="tip">💡 Los nombres de menús pueden variar según el modelo y la versión de la aplicación.</div></div>`;
+}
 function assistant(){
-content.innerHTML='<div class="tutorial"><div class="title">Asistente Virtual</div><h2>🤖 ¿En qué puedo ayudarte?</h2><p>Selecciona una opción para recibir una guía rápida.</p><div class="brands"><button class="brand" id="a1"><span class="icon">📶</span><b>Conectar al Wi-Fi</b><small>Ayuda con la conexión</small></button><button class="brand" id="a2"><span class="icon">📱</span><b>Configurar la app</b><small>Añadir tu cámara</small></button><button class="brand" id="a3"><span class="icon">🔑</span><b>Problemas de acceso</b><small>Contraseña y cuenta</small></button><button class="brand" id="a4"><span class="icon">🎥</span><b>No veo imagen</b><small>Revisar conexión</small></button></div><button class="back" id="back">← Volver</button></div>';
-document.getElementById("back").onclick=home;
+content.innerHTML=`<button class="back" data-action="back-home">← Volver</button><div class="panel"><h2>🤖 Asistente Virtual</h2><p>Selecciona tu problema:</p>${problems.map((p,i)=>`<button class="problem" data-action="problem" data-problem="${i}"><span>${p[1]}</span><b>${p[2]}</b></button>`).join("")}</div>`;
 }
-function tutorial(name){
-content.innerHTML=`<div class="tutorial"><div class="title">Tutorial</div><h2>${name}</h2><small>Configuración básica paso a paso</small>
-${steps.map((s,i)=>`<div class="step"><span class="num">${i+1}</span><div>${s}</div></div>`).join("")}
-<button class="back" id="back">← Volver</button></div>`;
-document.getElementById("back").onclick=home;
+function showProblem(i){
+const p=problems[i];
+content.innerHTML=`<button class="back" data-action="assistant">← Volver</button><div class="panel"><h2>${p[1]} ${p[2]}</h2>${p[3].map((s,n)=>`<div class="step"><b>${n+1}.</b> ${s}</div>`).join("")}<div class="tip">💡 Si el problema continúa, puedes contactar al soporte técnico por WhatsApp: 992 138 933.</div><a class="wa" href="https://wa.me/51992138933?text=Hola%2C%20necesito%20ayuda%20con%20mi%20c%C3%A1mara." target="_blank" rel="noopener">Contactar soporte</a></div>`;
 }
-function help(){content.innerHTML='<div class="tutorial"><div class="title">Ayuda</div><h2>¿Problemas con tu cámara?</h2><p>Comprueba que la cámara esté encendida y que tu teléfono esté conectado a la red Wi-Fi correcta.</p><p>Busca el modelo exacto para consultar su tutorial.</p></div>'}
-content.addEventListener("click",e=>{const b=e.target.closest("[data-brand]");if(b)tutorial(b.dataset.brand);if(e.target.closest("#assistantCard"))assistant();});
-document.getElementById("form").onsubmit=e=>{e.preventDefault();const term=q.value.toLowerCase();const found=data.filter(x=>x[0].toLowerCase().includes(term));content.innerHTML=found.length?'<div class="title">Resultados</div><div class="brands">'+found.map(card).join("")+'</div>':'<p>No encontramos esa marca o modelo.</p>'};
-document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>{document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));n.classList.add("active");n.dataset.page==="home"?home():n.dataset.page==="brands"?brands():help()});
+content.addEventListener("click",e=>{
+const el=e.target.closest("[data-action]");
+if(!el)return;
+const a=el.dataset.action;
+if(a==="brand")tutorial(Number(el.dataset.brand));
+else if(a==="assistant")assistant();
+else if(a==="problem")showProblem(Number(el.dataset.problem));
+else if(a==="back-home")home();
+});
 home();
+if("serviceWorker" in navigator){navigator.serviceWorker.register("./service-worker.js").catch(()=>{});}
 </script>
 </body>
 </html>
