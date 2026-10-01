@@ -1,0 +1,8 @@
+CamSecure PWA
+
+1. Sube esta carpeta a un hosting que use HTTPS (por ejemplo GitHub Pages, Netlify o Vercel).
+2. Abre la dirección de la app desde Chrome en tu celular.
+3. En Chrome toca ⋮ > "Añadir a pantalla de inicio" o "Instalar aplicación".
+4. CamSecure aparecerá como una app independiente.
+
+Importante: un PWA necesita HTTPS (excepto localhost) para que el modo instalable y el service worker funcionen correctamente.

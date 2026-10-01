@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CamSecure</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e9edf3;font-family:Arial,sans-serif;color:#182230}
+.phone{max-width:390px;min-height:100vh;margin:auto;background:#f5f7fb}
+.top{padding:24px 20px 18px;background:#fff}.logo{font-size:25px;font-weight:800}.hello{font-size:13px;color:#667085;margin-top:4px}
+.search{margin-top:17px;display:flex;gap:7px}.search input{flex:1;padding:12px;border:1px solid #e1e5eb;border-radius:13px;font-size:15px}.search button{border:0;border-radius:13px;padding:0 14px;background:#2563eb;color:#fff;font-weight:700}
+.body{padding:18px 16px 25px;min-height:550px}.title{font-size:18px;font-weight:800;margin-bottom:12px}.brands{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.brand{background:#fff;border:1px solid #e4e7ec;border-radius:17px;padding:16px 10px;text-align:left;cursor:pointer;min-height:105px}.brand .icon{font-size:28px}.brand b{display:block;margin-top:10px}.brand small{color:#667085}
+.tutorial{background:#fff;border-radius:18px;padding:17px;border:1px solid #e4e7ec}.tutorial h2{margin:0 0 3px}.step{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #eef0f3;font-size:13px}.num{width:28px;height:28px;min-width:28px;border-radius:50%;display:grid;place-items:center;background:#eaf2ff;color:#2563eb;font-weight:800}
+.back{border:0;background:#f0f2f5;border-radius:10px;padding:10px 13px;font-weight:700;margin-top:14px;cursor:pointer}
+.bottom{display:flex;justify-content:space-around;background:#fff;border-top:1px solid #e5e7eb;padding:10px 4px;position:sticky;bottom:0}.nav{background:none;border:0;font-size:11px;color:#667085;cursor:pointer;padding:5px 15px}.nav.active{color:#2563eb;font-weight:800}.nav span{display:block;font-size:20px;margin-bottom:2px}
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#2563eb">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch(console.error);
+  });
+}
+</script>
+</head>
+<body>
+<div class="phone">
+<header class="top">
+<div class="logo">🔐 CamSecure</div>
+<div class="hello">Guía para configurar tu cámara de seguridad</div>
+<form class="search" id="form"><input id="q" placeholder="Buscar marca o modelo"><button>Buscar</button></form>
+</header>
+<main class="body" id="content"></main>
+<nav class="bottom">
+<button class="nav active" data-page="home"><span>⌂</span>Inicio</button>
+<button class="nav" data-page="brands"><span>▦</span>Marcas</button>
+<button class="nav" data-page="help"><span>?</span>Ayuda</button>
+</nav>
+</div>
+<script>
+const data=[
+["Hikvision","📷","Cámaras IP y DVR"],["Dahua","📹","Cámaras IP y grabadores"],
+["EZVIZ","📡","Cámaras Wi-Fi"],["TP-Link Tapo","📶","Cámaras inteligentes"],
+["Xiaomi","🏠","Cámaras domésticas"],["Imou","🎥","Cámaras Wi-Fi"],
+["Reolink","🔭","Cámaras IP"],["Annke","🛡️","Cámaras y DVR"]
+];
+const steps=[
+"Conecta la cámara a la corriente.",
+"Instala la aplicación oficial de la marca.",
+"Crea o inicia sesión en tu cuenta.",
+"Pulsa “Añadir dispositivo”.",
+"Conecta la cámara a tu red Wi-Fi.",
+"Configura una contraseña segura.",
+"Comprueba la imagen en directo."
+];
+const content=document.getElementById("content"),q=document.getElementById("q");
+function card(x){return `<button class="brand" data-brand="${x[0]}"><span class="icon">${x[1]}</span><b>${x[0]}</b><small>${x[2]}</small></button>`}
+function home(){content.innerHTML='<div class="title">¿Qué cámara tienes?</div><div class="brands">'+data.slice(0,6).map(card).join("")+'</div><button class="brand" id="assistantCard" style="grid-column:1/-1;text-align:left"><span class="icon">🤖💬</span><b>Asistente Virtual</b><small>¿Necesitas ayuda? Te guiamos</small></button>'}
+function brands(){content.innerHTML='<div class="title">Todas las marcas</div><div class="brands">'+data.map(card).join("")+"</div>"}
+function assistant(){
+content.innerHTML='<div class="tutorial"><div class="title">Asistente Virtual</div><h2>🤖 ¿En qué puedo ayudarte?</h2><p>Selecciona una opción para recibir una guía rápida.</p><div class="brands"><button class="brand" id="a1"><span class="icon">📶</span><b>Conectar al Wi-Fi</b><small>Ayuda con la conexión</small></button><button class="brand" id="a2"><span class="icon">📱</span><b>Configurar la app</b><small>Añadir tu cámara</small></button><button class="brand" id="a3"><span class="icon">🔑</span><b>Problemas de acceso</b><small>Contraseña y cuenta</small></button><button class="brand" id="a4"><span class="icon">🎥</span><b>No veo imagen</b><small>Revisar conexión</small></button></div><button class="back" id="back">← Volver</button></div>';
+document.getElementById("back").onclick=home;
+}
+function tutorial(name){
+content.innerHTML=`<div class="tutorial"><div class="title">Tutorial</div><h2>${name}</h2><small>Configuración básica paso a paso</small>
+${steps.map((s,i)=>`<div class="step"><span class="num">${i+1}</span><div>${s}</div></div>`).join("")}
+<button class="back" id="back">← Volver</button></div>`;
+document.getElementById("back").onclick=home;
+}
+function help(){content.innerHTML='<div class="tutorial"><div class="title">Ayuda</div><h2>¿Problemas con tu cámara?</h2><p>Comprueba que la cámara esté encendida y que tu teléfono esté conectado a la red Wi-Fi correcta.</p><p>Busca el modelo exacto para consultar su tutorial.</p></div>'}
+content.addEventListener("click",e=>{const b=e.target.closest("[data-brand]");if(b)tutorial(b.dataset.brand);if(e.target.closest("#assistantCard"))assistant();});
+document.getElementById("form").onsubmit=e=>{e.preventDefault();const term=q.value.toLowerCase();const found=data.filter(x=>x[0].toLowerCase().includes(term));content.innerHTML=found.length?'<div class="title">Resultados</div><div class="brands">'+found.map(card).join("")+'</div>':'<p>No encontramos esa marca o modelo.</p>'};
+document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>{document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));n.classList.add("active");n.dataset.page==="home"?home():n.dataset.page==="brands"?brands():help()});
+home();
+</script>
+</body>
+</html>
